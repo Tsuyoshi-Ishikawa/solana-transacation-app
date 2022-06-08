@@ -1,8 +1,25 @@
+import { WalletContextProvider } from '../contexts/WalletContextProvider';
+import { AppProps } from 'next/app';
+import Head from 'next/head';
+import { FC } from 'react';
+import { AppBar } from '../components/AppBar';
+
+require('@solana/wallet-adapter-react-ui/styles.css');
 import '../styles/globals.css'
-import type { AppProps } from 'next/app'
 
-function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
-}
+const App: FC<AppProps> = ({ Component, pageProps }) => {
+    return (
+        <>
+          <Head>
+            <title>Solana transaction app</title>
+          </Head>
 
-export default MyApp
+          <WalletContextProvider>
+            <AppBar/>
+            <Component {...pageProps} />
+          </WalletContextProvider>
+        </>
+    );
+};
+
+export default App;
