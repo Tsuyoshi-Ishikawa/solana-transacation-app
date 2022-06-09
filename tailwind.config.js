@@ -4,7 +4,12 @@ module.exports = {
     "./components/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      backgroundColor: {
+        'solana-purple': '#512da8',
+        'solana-deep-purple': '#311b92',
+      },
+    },
   },
   plugins: [],
 }

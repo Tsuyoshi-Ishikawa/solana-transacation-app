@@ -5,6 +5,7 @@ import { useWallet } from "@solana/wallet-adapter-react";
 import { Connection, clusterApiUrl, TransactionResponse } from '@solana/web3.js';
 import { getTransactions } from '../web3/transaction';
 import TransactionsView from '../components/Transaction';
+import Send from '../components/Send';
 
 const network = WalletAdapterNetwork.Devnet;
 const connection = new Connection(clusterApiUrl(network), "confirmed");
@@ -25,7 +26,7 @@ const Home: NextPage = () => {
   }, [publicKey]);
 
   // Update the list after the transaction
-  const handleOnTransaction = useCallback(
+  const handleOnTransactionComplete = useCallback(
     async () => {
     if (publicKey) {
       const transactions = await getTransactions(connection, publicKey);
@@ -37,6 +38,12 @@ const Home: NextPage = () => {
 
   return (
     <div className='space-x-4'>
+      {publicKey && (
+        <Send
+          connection={connection}
+          onTransactionCompleted={handleOnTransactionComplete}
+        />
+      )}
       <TransactionsView transactions={transactions} publicKey={publicKey!} />
     </div>
   )
