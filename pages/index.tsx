@@ -1,11 +1,44 @@
 import type { NextPage } from 'next'
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Home.module.css'
+import { useEffect, useState, useCallback } from "react";
+import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
+import { useWallet } from "@solana/wallet-adapter-react";
+import { Connection, clusterApiUrl, ConfirmedTransaction } from '@solana/web3.js';
+import { getTransactions } from '../web3/transaction';
+import TransactionsView from '../components/Transaction';
+
+const network = WalletAdapterNetwork.Devnet;
+const connection = new Connection(clusterApiUrl(network), "confirmed");
 
 const Home: NextPage = () => {
+  const { publicKey } = useWallet();
+  const [transactions, setTransactions] =
+    useState<Array<ConfirmedTransaction>>();
+  
+  useEffect(() => {
+    const fetchTransactions = async () => {
+      if (publicKey) {
+        const transactions = await getTransactions(connection, publicKey);
+        setTransactions(transactions);
+      }
+    };
+    fetchTransactions();
+  }, [publicKey]);
+
+  // Update the list after the transaction
+  const handleOnTransaction = useCallback(
+    async () => {
+    if (publicKey) {
+      const transactions = await getTransactions(connection, publicKey);
+      setTransactions(transactions);
+      }
+    },
+    [publicKey],
+  );
+
   return (
-    <></>
+    <div className='space-x-4'>
+      <TransactionsView transactions={transactions} publicKey={publicKey!} />
+    </div>
   )
 }
 
