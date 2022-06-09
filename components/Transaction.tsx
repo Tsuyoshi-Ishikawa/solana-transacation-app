@@ -34,13 +34,30 @@ const TransactionItem: FC<TransactionItemProps> = ({
   const maskedReceiver = mask(receiver);
 
   return (
-    <article>
-      <p>Sender: {maskedSender} {sender === publicKey.toBase58() ? '(You)' : ''}</p>
-      <p>Receiver: {maskedReceiver} {receiver === publicKey.toBase58() ? '(You)' : ''}</p>
-      <p>Sender Balance: {(meta?.postBalances[0] || 0) / LAMPORTS_PER_SOL}SOL</p>
-      <p>Sent Amount: {amount / LAMPORTS_PER_SOL}SOL</p>
-      <p>Sent Fee: {(meta?.fee || 0) / LAMPORTS_PER_SOL}SOL</p>
-      <p>TransactionTime(confirmedBlockTime): {time}</p>
+    <article className="block p-6 bg-white rounded-lg border border-gray-200 shadow-md hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+      <div className="text-gray-500 font-bold text-xl mb-1"><span>Sender:</span>
+        <span className="ml-2 text-purple-500">{maskedSender}{sender === publicKey?.toBase58() ? '(You)' : ''}</span>
+      </div>
+      <p>
+        <span className="text-gray-500 font-bold">receiver:</span>
+        <span className="ml-2 text-purple-500">{maskedReceiver} {receiver === publicKey?.toBase58() ? '(You)' : ''}</span>
+      </p>
+      <p>
+        <span className="text-gray-500 font-bold">Sender Balance:</span>
+        <span className="ml-2 text-purple-500">{(meta?.postBalances[0] || 0) / LAMPORTS_PER_SOL}SOL</span>
+      </p>
+      <p>
+        <span className="text-gray-500 font-bold">Sent Amount:</span>
+        <span className="ml-2 text-purple-500">{amount / LAMPORTS_PER_SOL}SOL</span>
+      </p>
+      <p>
+        <span className="text-gray-500 font-bold">Sent Fee:</span>
+        <span className="ml-2 text-purple-500">{(meta?.fee || 0) / LAMPORTS_PER_SOL}SOL</span>
+      </p>
+      <p>
+        <span className="text-gray-500 font-bold">TransactionTime(confirmedBlockTime):</span>
+        <span className="ml-2 text-purple-500">{time}</span>
+      </p>
     </article>
   );
 };
@@ -58,7 +75,7 @@ const TransactionsView: FC<TransactionsViewProps> = ({
     return <div>No Items to show. Please connect the wallet.</div>;
   }
   return (
-    <div className="space-x-2">
+    <div className="space-y-6">
       {transactions.map((trans, index) => (
         <TransactionItem
           key={index}

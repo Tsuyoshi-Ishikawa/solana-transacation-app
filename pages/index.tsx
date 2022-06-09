@@ -37,7 +37,7 @@ const Home: NextPage = () => {
   );
 
   return (
-    <div className='space-x-4'>
+    <div className='space-y-6'>
       {publicKey && (
         <Send
           connection={connection}
