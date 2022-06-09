@@ -1,10 +1,10 @@
 import { FC } from "react";
-import { LAMPORTS_PER_SOL, PublicKey, ConfirmedTransaction } from "@solana/web3.js";
+import { LAMPORTS_PER_SOL, PublicKey, TransactionResponse } from "@solana/web3.js";
 
 
 interface TransactionItemProps {
   publicKey: PublicKey;
-  transaction: ConfirmedTransaction;
+  transaction: TransactionResponse;
 }
 
 const mask = (address: String) =>
@@ -22,8 +22,8 @@ const TransactionItem: FC<TransactionItemProps> = ({
   const time = new Date(
     transaction.blockTime! * 1000
   ).toLocaleString();
-  const sender = trans.instructions[0].keys[0].pubkey.toBase58();
-  const receiver = trans.instructions[0].keys[1].pubkey.toBase58();
+  const sender = trans.message.accountKeys[0].toBase58();
+  const receiver = trans.message.accountKeys[1].toBase58();
 
   let amount = 0;
   if (meta) {
@@ -47,7 +47,7 @@ const TransactionItem: FC<TransactionItemProps> = ({
 
 interface TransactionsViewProps {
   publicKey: PublicKey;
-  transactions?: Array<ConfirmedTransaction>;
+  transactions?: Array<TransactionResponse>;
 }
 
 const TransactionsView: FC<TransactionsViewProps> = ({

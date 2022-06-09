@@ -2,7 +2,7 @@ import type { NextPage } from 'next'
 import { useEffect, useState, useCallback } from "react";
 import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
 import { useWallet } from "@solana/wallet-adapter-react";
-import { Connection, clusterApiUrl, ConfirmedTransaction } from '@solana/web3.js';
+import { Connection, clusterApiUrl, TransactionResponse } from '@solana/web3.js';
 import { getTransactions } from '../web3/transaction';
 import TransactionsView from '../components/Transaction';
 
@@ -12,7 +12,7 @@ const connection = new Connection(clusterApiUrl(network), "confirmed");
 const Home: NextPage = () => {
   const { publicKey } = useWallet();
   const [transactions, setTransactions] =
-    useState<Array<ConfirmedTransaction>>();
+    useState<Array<TransactionResponse>>();
   
   useEffect(() => {
     const fetchTransactions = async () => {
